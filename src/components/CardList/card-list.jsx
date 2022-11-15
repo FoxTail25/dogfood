@@ -8,7 +8,7 @@ const CardList = ({goods}) => {
 	
 		<div className='cards'>
 			{
-				goods.map((item, index) => <Card key={`${item.price}_${index}`} {...item} />) // деструктурируем и в карточку поступают нижеперечисленные данные
+				goods.map((item, index) => <Card key={item._id} {...item} />) // деструктурируем и в карточку поступают нижеперечисленные данные
 			}
 		</div>
 	);
