@@ -3,9 +3,9 @@ const onResponce = (res) => {
 }
 
 class Api {
-    constructor({baseUrl, headers}){
+    constructor({ baseUrl, headers }) {
         this._headers = headers;
-        this._baseUrl= baseUrl;
+        this._baseUrl = baseUrl;
     }
 
     getProductList() {
@@ -20,11 +20,29 @@ class Api {
         }).then(onResponce)
     }
 
-    search(searchQuery) {
-        return fetch(`${this._baseUrl}/products/search?query=${searchQuery}`, {
-            headers: this._headers
+    setUserInfo(dataUser) {
+        return fetch(`${this._baseUrl}/users/me`, {
+            method: "PATCH",
+            headers: this._headers,
+            body: JSON.stringify(dataUser)
         }).then(onResponce)
-    }
+            .catch((err) => { console.log(`ошибка ${err}`) })
+        }
+        
+        search(searchQuery) {
+            return fetch(`${this._baseUrl}/products/search?query=${searchQuery}`, {
+                headers: this._headers
+            }).then(onResponce)
+            .catch((err) => { console.log(`ошибка ${err}`) })
+        }
+        
+        changeLikeProd(prodId, islike) {
+            return fetch(`${this._baseUrl}/products/likes/${prodId}`, {
+                method: islike ? "DELETE" : "PUT",
+                headers: this._headers
+            }).then(onResponce)
+            .catch((err) => { console.log(`ошибка ${err}`) })
+        }
 }
 
 const config = {
