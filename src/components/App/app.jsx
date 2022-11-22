@@ -4,6 +4,7 @@ import Footer from '../Footer/footer';
 import Header from '../Header/header';
 import Logo from '../Logo/logo';
 import Search from '../Search/search';
+import Spinner from '../Spinner/Spinner'
 // import Sort from '../Sort/sort';
 import './style.css';
 // import data from '../../assets/data.json'
@@ -18,25 +19,29 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentUser, setCurrentUser] = useState(null)
   const debounceSearchQuery = useDebounce(searchQuery, 500)
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleRequest = () => {
     // const filterCards = cards.filter(item => item.name.toUpperCase().includes(searchQuery.toUpperCase()));
     // setCards(filterCards);
+    setIsLoading(true)
     api.search(debounceSearchQuery)
       .then((searchResult) => {
         setCards(searchResult)
       })
       .catch(err => console.log(err))
+      .finally(()=> {setIsLoading(false)});
   }
 
   useEffect(() => {
+    setIsLoading(true)
     Promise.all([api.getProductList(), api.getUserInfo()])
       .then(([productData, userData]) => {
         setCurrentUser(userData)
         setCards(productData.products)
       })
       .catch(err => console.log(err))
+      .finally(setIsLoading(false))
   }, [])
 
 
@@ -64,33 +69,40 @@ function App() {
     const liked = isLiked(product.likes, currentUser._id)
     // const isLiked = product.likes.some(id => id === currentUser._id);
     api.changeLikeProd(product._id, liked)
-    .then((newCard)=> {
-      // console.log(newCard)
-      const newProducts = cards.map( cardState => {
-        console.log('Карточка из стейте', cardState);
-        console.log('Карточка c сервера', newCard);
-        return cardState._id === newCard._id ? newCard: cardState
+      .then((newCard) => {
+        // console.log(newCard)
+        const newProducts = cards.map(cardState => {
+          // console.log('Карточка из стейте', cardState);
+          // console.log('Карточка c сервера', newCard);
+          return cardState._id === newCard._id ? newCard : cardState
+        })
+
+        setCards(newProducts)
       })
 
-      setCards(newProducts)
-    })
-    
   }
 
   return (
     <>
-      <Header user={currentUser} onUpdateUser={handleUpdateUser}>
+      <Header>
         <>
           <Logo className='logo logo_place_header' href='/' />
-          {/* <Search/> */}
-          <Search onSubmit={handleFormSubmit} onInput={handleInputChange} />
+      
+          <Search 
+          onSubmit={handleFormSubmit} 
+          onInput={handleInputChange} 
+          />
         </>
       </Header>
       <main className='content container'>
         <SeachInfo searchText={searchQuery} searchCount={cards.length} />
-        {/* <Sort /> */}
+        {/* CatalogPage */}
+        {/* <Sort/> */}
         <div className='content__cards'>
-          <CardList goods={cards} onProductLike={handleProductLike} currentUser={currentUser}/>
+          {isLoading
+            ? <Spinner />
+            : <CardList goods={cards} onProductLike={handleProductLike} currentUser={currentUser} />
+          }
         </div>
       </main>
       <Footer />

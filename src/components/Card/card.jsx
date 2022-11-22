@@ -1,14 +1,18 @@
 import cn from 'classnames';
-import { isLiked } from '../../utils/product';
+import { calcDiscountPrice, isLiked } from '../../utils/product';
 
 import "./index.css";
 import {ReactComponent as Save} from "./save.svg";
 
 
 const Card = ({ name, price, discount, wight, description, pictures, tags, onProductLike, _id, likes, currentUser}) => {
-	const discount_price = Math.round(price - price * discount / 100);
+	const discount_price = calcDiscountPrice(price, discount);
 
-const liked = isLiked(likes, currentUser._id)
+	
+
+// console.log(currentUser._id, _id)
+
+const liked = isLiked(likes, currentUser?._id)
 
 	// const isLiked = likes.some(id => id === currentUser._id);
 
