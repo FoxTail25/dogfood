@@ -15,10 +15,3 @@ const CardList = ({goods}) => {
 };
 
 export default CardList;
-
-// name={item.name}
-// price={item.price}
-// discount={item.discount}
-// wight={item.wight}
-// description={item.description}
-// picture={item.picture} />
