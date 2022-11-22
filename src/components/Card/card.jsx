@@ -10,13 +10,9 @@ const Card = ({ name, price, discount, wight, description, pictures, tags, onPro
 
 const liked = isLiked(likes, currentUser._id)
 
-	// const isLiked = likes.some(id => id === currentUser._id);
-
-
 	function handleLike() {
 		onProductLike({_id, likes})
 	}
-
 
 	return (
 		<div className="card">

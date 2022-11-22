@@ -4,9 +4,7 @@ import Footer from '../Footer/footer';
 import Header from '../Header/header';
 import Logo from '../Logo/logo';
 import Search from '../Search/search';
-// import Sort from '../Sort/sort';
 import './style.css';
-// import data from '../../assets/data.json'
 import SeachInfo from '../SeachInfo';
 import api from '../../utils/api';
 import useDebounce from '../../hooks/useDebounce';
@@ -21,8 +19,7 @@ function App() {
 
 
   const handleRequest = () => {
-    // const filterCards = cards.filter(item => item.name.toUpperCase().includes(searchQuery.toUpperCase()));
-    // setCards(filterCards);
+
     api.search(debounceSearchQuery)
       .then((searchResult) => {
         setCards(searchResult)
@@ -62,10 +59,8 @@ function App() {
   }
   function handleProductLike(product) {
     const liked = isLiked(product.likes, currentUser._id)
-    // const isLiked = product.likes.some(id => id === currentUser._id);
     api.changeLikeProd(product._id, liked)
     .then((newCard)=> {
-      // console.log(newCard)
       const newProducts = cards.map( cardState => {
         console.log('Карточка из стейте', cardState);
         console.log('Карточка c сервера', newCard);
@@ -82,7 +77,6 @@ function App() {
       <Header user={currentUser} onUpdateUser={handleUpdateUser}>
         <>
           <Logo className='logo logo_place_header' href='/' />
-          {/* <Search/> */}
           <Search onSubmit={handleFormSubmit} onInput={handleInputChange} />
         </>
       </Header>
@@ -99,8 +93,3 @@ function App() {
 }
 export default App;
 
-
-    //   useEffect(()=> {
-    //   setSearchQuery('жел');
-    // handleRequest()
-    // },[searchQuery])
