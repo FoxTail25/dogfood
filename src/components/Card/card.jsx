@@ -8,13 +8,8 @@ import {ReactComponent as Save} from "./save.svg";
 const Card = ({ name, price, discount, wight, description, pictures, tags, onProductLike, _id, likes, currentUser}) => {
 	const discount_price = calcDiscountPrice(price, discount);
 
-	
-
-// console.log(currentUser._id, _id)
 
 const liked = isLiked(likes, currentUser?._id)
-
-	// const isLiked = likes.some(id => id === currentUser._id);
 
 
 	function handleLike() {

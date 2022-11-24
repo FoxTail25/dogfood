@@ -13,5 +13,5 @@ import Spinner from './components/Spinner/Spinner';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<ProductPage/>)
+root.render(<App/>)
 
