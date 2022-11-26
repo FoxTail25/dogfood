@@ -4,21 +4,28 @@ import { calcDiscountPrice, isLiked, createMarkup } from "../../utils/product";
 import { ReactComponent as Save} from './img/save.svg'
 import truck from './img/truck.svg'
 import quality from './img/quality.svg'
+import { Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { UserContext } from '../../context/userContext';
 
 
-export const Product = ({currentUser, _id, onProductLike, available, description, discount, isPublished, likes =[], name, pictures, price, reviews, stock, tags, wight }) => {
+export const Product = ({onProductLike, available, description, discount, isPublished, likes =[], name, pictures, price, reviews, stock, tags, wight }) => {
+
+    const {user: currentUser} = useContext(UserContext);
+
 
     const discountPrice = calcDiscountPrice(price, discount);
 	const isLike = isLiked(likes, currentUser?._id);
     const descriptionHTML = createMarkup(description)
-    console.log(descriptionHTML)
+    // console.log(descriptionHTML)
 
-
+    const navigate = useNavigate()
 
     return (
         <>
             <div>
-                <a className="button-back" href="#">Назад</a>
+                {/* <Link className="button-back" to="/">Назад</Link> РАБОТАЕТ БЕЗ ПЕРЕЗАГРУЗКИ СТРАНИЦЫ */}
+                <a className="button-back" href='#' onClick={() => navigate(-1)}>Назад</a>
                 <h1 className={s.productTitle}>{name}</h1>
                 <div>
                     <span>Артикул:</span> <b>2388907</b>

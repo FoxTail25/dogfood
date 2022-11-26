@@ -15,6 +15,13 @@ function Search({onSubmit: propsOnSubmit, onInput}) {
 const handleFormSubmit = (e) => {
   e.preventDefault()
   propsOnSubmit(inputText)
+  // setInputText('')
+}
+
+const handleClearInput =(e) => {
+  e.stopPropagination()
+  setInputText('')
+  onInput && onInput('')
 }
 
 
