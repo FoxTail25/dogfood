@@ -77,7 +77,6 @@ function App() {
   return (
     <>
       <Header>
-        <>
           <Logo className='logo logo_place_header' href='/' />
       
           <Search 
