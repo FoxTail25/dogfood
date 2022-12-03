@@ -79,8 +79,9 @@ function App() {
         setCards(newProducts);
         return updateCard;
       })
+  }, [currentUser, cards])
 
-  }, [currentUser])
+
   // console.log(UserContext)
   return (
     <UserContext.Provider value={{
@@ -98,7 +99,7 @@ function App() {
               />
             } />
           </Routes>
-          
+
         </Header>
         <main className='content container'>
           <SeachInfo searchText={searchQuery}  />

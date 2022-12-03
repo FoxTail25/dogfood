@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export const useApi = (handler) => {
-    const [data, setData] =useState(null);
+    const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState (null);
 
@@ -14,7 +14,7 @@ export const useApi = (handler) => {
             .catch((err)=> {
                 setError(err);
             })
-            .finale(()=> {
+            .finally(()=> {
                 setLoading(false)
             })
     }, [handler])

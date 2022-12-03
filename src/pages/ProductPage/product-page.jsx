@@ -17,7 +17,7 @@ export const ProductPage = () => {
   // const [product, setProduct] = useState(null)
   // const [errorState, setErrorState] = useState(null)
 
-  const handleGetProduct = () => api.getProductById(productId);
+  const handleGetProduct = useCallback(() => api.getProductById(productId), [productId]);
 
   const {data: product,
     setData: setProduct,
@@ -32,7 +32,7 @@ export const ProductPage = () => {
       setProduct(updateProduct);
     });
 
-  }, [product, handleLike])
+  }, [product, handleLike, setProduct])
 
  
 
@@ -53,8 +53,8 @@ export const ProductPage = () => {
             ? <Spinner />
             : !errorState && <Product {...product} setProduct={setProduct} onProductLike={handleProductLike}/>
           }
+        {!isLoading && errorState && <notFound/>}
         </div>
-        {errorState && <notFound/>}
     </>
   )
 }
