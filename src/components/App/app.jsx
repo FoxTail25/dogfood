@@ -98,6 +98,7 @@ function App() {
               />
             } />
           </Routes>
+          
         </Header>
         <main className='content container'>
           <SeachInfo searchText={searchQuery}  />

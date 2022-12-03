@@ -6,16 +6,25 @@ import { Product } from "../../components/Product/product"
 import { useParams } from "react-router-dom";
 import { useContext } from "react"
 import { CardContext } from "../../context/cardContext";
+import { useApi } from "../../hooks/useApi";
 
-export const ProductPage = ({isLoading}) => {
+export const ProductPage = () => {
 
-
-  const { productId } = useParams();
-  const [product, setProduct] = useState(null)
-  const [errorState, setErrorState] = useState(null)
   
-
+  const { productId } = useParams();
   const {handleLike} = useContext(CardContext);
+
+  // const [product, setProduct] = useState(null)
+  // const [errorState, setErrorState] = useState(null)
+
+  const handleGetProduct = () => api.getProductById(productId);
+
+  const {data: product,
+    setData: setProduct,
+    loading: isLoading,
+    error: errorState
+  } = useApi(handleGetProduct)
+
 
 
   const handleProductLike = useCallback(() => {
@@ -25,14 +34,16 @@ export const ProductPage = ({isLoading}) => {
 
   }, [product, handleLike])
 
+ 
 
-  useEffect(() => {
-    api.getProductById(productId)
-      .then(( productData ) => {
-        setProduct(productData)
-      })
-      .catch(err => setErrorState(err))
-  }, [])
+
+  // useEffect(() => {
+  //   api.getProductById(productId)
+  //     .then(( productData ) => {
+  //       setProduct(productData)
+  //     })
+  //     .catch(err => setErrorState(err))
+  // }, [])
 
   return (
     <>
