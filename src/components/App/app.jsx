@@ -1,10 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import CardList from '../CardList/card-list';
 import Footer from '../Footer/footer';
 import Header from '../Header/header';
 import Logo from '../Logo/logo';
 import Search from '../Search/search';
-import Sort from '../Sort/sort';
 import './style.css';
 import SeachInfo from '../SeachInfo';
 import api from '../../utils/api';
@@ -16,6 +14,7 @@ import { NotFoundPage } from '../../pages/NotFoundPage/not-found-page';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
 import { CardContext } from '../../context/cardContext';
+import { FaqPage } from '../../pages/FAQPage/faq-page';
 
 
 function App() {
@@ -26,6 +25,7 @@ function App() {
   const debounceSearchQuery = useDebounce(searchQuery, 500)
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate()
+  const [favorites, setFavorites] = useState([])
 
   const handleRequest = useCallback(() => {
     setIsLoading(true)
@@ -41,8 +41,11 @@ function App() {
     setIsLoading(true)
     Promise.all([api.getProductList(), api.getUserInfo()])
       .then(([productData, userData]) => {
-        setCurrentUser(userData)
-        setCards(productData.products)
+        setCurrentUser(userData);
+        setCards(productData.products);
+        const favoriteProducts = productData.products.filter(item => isLiked(item.likes, userData._id));
+        // console.log(favoriteProducts);
+        setFavorites(prevState => favoriteProducts)
       })
       .catch(err => console.log(err))
       .finally(setIsLoading(false))
@@ -76,6 +79,12 @@ function App() {
         const newProducts = cards.map(cardState => {
           return cardState._id === updateCard._id ? updateCard : cardState
         })
+
+        if(!liked) {
+          setFavorites(prevState => [...prevState, updateCard])
+        } else {
+          setFavorites(prevState => prevState.filter(card => card._id !== updateCard._id))
+        }
         setCards(newProducts);
         return updateCard;
       })
@@ -115,7 +124,7 @@ function App() {
                 isLoading={isLoading}
               />
             } />
-
+            <Route path='/faq' element={<FaqPage/>}/>
             <Route path='*' element={
               <NotFoundPage />
             } />

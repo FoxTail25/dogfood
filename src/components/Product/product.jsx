@@ -13,7 +13,6 @@ export const Product = ({onProductLike, available, description, discount, isPubl
 
     const {user: currentUser} = useContext(UserContext);
 
-
     const discountPrice = calcDiscountPrice(price, discount);
 	const isLike = isLiked(likes, currentUser?._id);
     const descriptionHTML = createMarkup(description)
