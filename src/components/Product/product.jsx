@@ -1,20 +1,21 @@
 import s from './index.module.css';
 import cn from 'classnames';
 import { calcDiscountPrice, isLiked, createMarkup } from "../../utils/product";
-import { ReactComponent as Save} from './img/save.svg'
+import { ReactComponent as Save } from './img/save.svg'
 import truck from './img/truck.svg'
 import quality from './img/quality.svg'
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../../context/userContext';
+import { ContentHeader } from '../ContentHeader/content-header';
 
 
-export const Product = ({onProductLike, available, description, discount, isPublished, likes =[], name, pictures, price, reviews, stock, tags, wight }) => {
+export const Product = ({ onProductLike, available, description, discount, isPublished, likes = [], name, pictures, price, reviews, stock, tags, wight }) => {
 
-    const {user: currentUser} = useContext(UserContext);
+    const { user: currentUser } = useContext(UserContext);
 
     const discountPrice = calcDiscountPrice(price, discount);
-	const isLike = isLiked(likes, currentUser?._id);
+    const isLike = isLiked(likes, currentUser?._id);
     const descriptionHTML = createMarkup(description)
     // console.log(descriptionHTML)
 
@@ -22,21 +23,21 @@ export const Product = ({onProductLike, available, description, discount, isPubl
 
     return (
         <>
-            <div>
-                {/* <Link className="button-back" to="/">Назад</Link> РАБОТАЕТ БЕЗ ПЕРЕЗАГРУЗКИ СТРАНИЦЫ */}
-                <a className="button-back" href='#' onClick={() => navigate(-1)}>Назад</a>
-                <h1 className={s.productTitle}>{name}</h1>
+            <ContentHeader title={name}>
+
                 <div>
                     <span>Артикул:</span> <b>2388907</b>
                 </div>
-            </div>
+
+            </ContentHeader>
+
             <div className={s.product}>
                 <div className={s.imgWrapper}>
                     <img src={pictures} alt={`Изображение ${name}`} />
                 </div>
                 <div className={s.desc}>
                     <span className={discount ? s.oldPrice : s.price}>{price}&nbsp;₽</span>
-                    {discount && <span className={cn(s.price, 'card__price_type_discount')}>{discountPrice}&nbsp;₽</span>}
+                    {discount !== 0 && <span className={cn(s.price, 'card__price_type_discount')}>{discountPrice}&nbsp;₽</span>}
                     <div className={s.btnWrap}>
                         <div className={s.left}>
                             <button className={s.minus}>-</button>
@@ -48,8 +49,8 @@ export const Product = ({onProductLike, available, description, discount, isPubl
 
 
                     </div>
-                    <button className={cn(s.favorite, {[s.favoriteActive]: isLike})} onClick={onProductLike}>
-                        <Save/>
+                    <button className={cn(s.favorite, { [s.favoriteActive]: isLike })} onClick={onProductLike}>
+                        <Save />
                         <span>{isLike ? 'В избранном' : ' в избранное'}</span>
                     </button>
                     <div className={s.delivery}>
@@ -78,35 +79,35 @@ export const Product = ({onProductLike, available, description, discount, isPubl
 
                 </div>
             </div>
-            
+
             <div className={s.box}>
                 <h2 className={s.title}>Описание</h2>
                 <p className={s.sumtitle} dangerouslySetInnerHTML={descriptionHTML}></p>
                 <h2 className={s.title}>Характеристики</h2>
 
                 <div className={s.grid}>
-					<div className={s.naming}>Вес</div>
-					<div className={s.description}>1 шт 120-200 грамм</div>
-					<div className={s.naming}>Цена</div>
-					<div className={s.description}>490 ₽ за 100 грамм</div>
-					<div className={s.naming}>Польза</div>
-					<div className={s.description}>
-						<p>
-							Большое содержание аминокислот и микроэлементов оказывает
-							положительное воздействие на общий обмен веществ собаки.
-						</p>
-						<p>Способствуют укреплению десен и жевательных мышц.</p>
-						<p>
-							Развивают зубочелюстной аппарат, отвлекают собаку во время смены
-							зубов.
-						</p>
-						<p>
-							Имеет цельную волокнистую структуру, при разжевывание получается
-							эффект зубной щетки, лучше всего очищает клыки собак.
-						</p>
-						<p>Следует учесть высокую калорийность продукта.</p>
-					</div>
-				</div>
+                    <div className={s.naming}>Вес</div>
+                    <div className={s.description}>1 шт 120-200 грамм</div>
+                    <div className={s.naming}>Цена</div>
+                    <div className={s.description}>490 ₽ за 100 грамм</div>
+                    <div className={s.naming}>Польза</div>
+                    <div className={s.description}>
+                        <p>
+                            Большое содержание аминокислот и микроэлементов оказывает
+                            положительное воздействие на общий обмен веществ собаки.
+                        </p>
+                        <p>Способствуют укреплению десен и жевательных мышц.</p>
+                        <p>
+                            Развивают зубочелюстной аппарат, отвлекают собаку во время смены
+                            зубов.
+                        </p>
+                        <p>
+                            Имеет цельную волокнистую структуру, при разжевывание получается
+                            эффект зубной щетки, лучше всего очищает клыки собак.
+                        </p>
+                        <p>Следует учесть высокую калорийность продукта.</p>
+                    </div>
+                </div>
             </div>
         </>
     );

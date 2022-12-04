@@ -15,6 +15,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
 import { CardContext } from '../../context/cardContext';
 import { FaqPage } from '../../pages/FAQPage/faq-page';
+import { FavoritePage } from '../../pages/FavoritePage/favorite-page';
 
 
 function App() {
@@ -96,7 +97,7 @@ function App() {
     <UserContext.Provider value={{
       user: currentUser
     }}>
-      <CardContext.Provider value={{cards,
+      <CardContext.Provider value={{cards, favorites,
       handleLike: handleProductLike}}>
         <Header>
           <Logo className='logo logo_place_header' href='/' />
@@ -111,23 +112,18 @@ function App() {
 
         </Header>
         <main className='content container'>
-          <SeachInfo searchText={searchQuery}  />
+          <SeachInfo searchText={searchQuery}/>
           <Routes>
-            <Route index element={
-              <CatalogPage
-                isLoading={isLoading}
-              />
-            } />
 
-            <Route path='/product/:productId' element={
-              <ProductPage
-                isLoading={isLoading}
-              />
-            } />
+            <Route index element={<CatalogPage isLoading={isLoading}/>}/>
+            
+            <Route path='/product/:productId' element={<ProductPage isLoading={isLoading}/>}/>
+            
+            <Route path='/favorites' element={<FavoritePage isLoading={isLoading}/>}/>
+           
             <Route path='/faq' element={<FaqPage/>}/>
-            <Route path='*' element={
-              <NotFoundPage />
-            } />
+            
+            <Route path='*' element={<NotFoundPage/>}/>
 
           </Routes>
         </main>
