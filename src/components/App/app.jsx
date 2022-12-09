@@ -1,24 +1,25 @@
 import { useState, useEffect, useCallback } from 'react';
-import Footer from '../Footer/footer';
-import Header from '../Header/header';
-import Logo from '../Logo/logo';
-import Search from '../Search/search';
-import './style.css';
-import SeachInfo from '../SeachInfo';
-import api from '../../utils/api';
-import useDebounce from '../../hooks/useDebounce';
+import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { isLiked } from '../../utils/product';
 import { CatalogPage } from '../../pages/CatalogPage/catalog-page';
 import { ProductPage } from '../../pages/ProductPage/product-page';
 import { NotFoundPage } from '../../pages/NotFoundPage/not-found-page';
-import { Route, Routes, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context/userContext';
 import { CardContext } from '../../context/cardContext';
 import { FaqPage } from '../../pages/FAQPage/faq-page';
 import { FavoritePage } from '../../pages/FavoritePage/favorite-page';
+import Header from '../Header/header';
+import Logo from '../Logo/logo';
+import SeachInfo from '../SeachInfo';
+import Search from '../Search/search';
+import Footer from '../Footer/footer';
+import api from '../../utils/api';
+import useDebounce from '../../hooks/useDebounce';
+import './style.css';
 // import Form from '../Form/form';
-import RegistrationForm from '../Form/registration-form';
+// import RegistrationForm from '../Form/registration-form';
 import Modal from '../Modal/modal';
+import FormModal from '../FormModal/form-modal';
 
 // function ContactList({ contacts }) {
 
@@ -47,7 +48,13 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate()
   const [favorites, setFavorites] = useState([])
-  const [isOpenModalForm, setIsOpenModalForm] = useState(false)
+  // const [isOpenModalForm, setIsOpenModalForm] = useState(false)
+
+  const location = useLocation()
+
+  const backgroundLocation = location.state?.backgroundLocation;
+  const initialPath = location.state?.initialPath
+  // console.log('Это initialPath!!', initialPath)
 
   // const [contacts, setContacts] = useState([])
 
@@ -130,16 +137,7 @@ function App() {
         cards, favorites,
         handleLike: handleProductLike
       }}>
-
-        {/* <Form serializeCb={addContakt} /> */}
-        {/* <ContactList contacts={contacts}/> */}
-        
-        <Modal active={isOpenModalForm} setActive={setIsOpenModalForm}>
-
-          <RegistrationForm/>
-
-        </Modal>
-        <button onClick={() => setIsOpenModalForm(true)}>Войти</button>
+        <FormModal/>
         <Header>
           <Logo className='logo logo_place_header' href='/' />
           <Routes>
@@ -154,7 +152,7 @@ function App() {
         </Header>
         <main className='content container'>
           <SeachInfo searchText={searchQuery} />
-          <Routes>
+          <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
 
             <Route index element={<CatalogPage />} />
 
@@ -164,9 +162,48 @@ function App() {
 
             <Route path='/faq' element={<FaqPage />} />
 
+            <Route path='/login' element={
+              <>
+                Авторизация
+                <Link to='/register' >Зарегистрироваться</Link>
+              </>
+
+            } />
+
+            <Route path='/register' element={
+              <>
+                Регистрация
+                <Link to='/login' >Войти</Link>
+              </>
+
+            } />
+
+
             <Route path='*' element={<NotFoundPage />} />
 
           </Routes>
+
+          {backgroundLocation && (
+
+            <Routes>
+
+              <Route path='/login' element={
+                <Modal>
+                  Авторизация
+                  <Link to='/register' replace={true} state={{ backgroundLocation: location, initialPath }}>Зарегистрироваться</Link>
+                </Modal>
+              } />
+
+              <Route path='/register' element={
+                <Modal>
+                  Регистрация
+                  <Link to='/login' replace={true} state={{ backgroundLocation: location, initialPath }}>Войти</Link>
+                </Modal>
+              } />
+
+
+            </Routes>
+          )}
         </main>
         <Footer />
       </CardContext.Provider>

@@ -1,8 +1,9 @@
 
 
-import './index.css';
+// import './index.css';
 
 import { useForm } from 'react-hook-form'
+import { FormInput } from '../FormInpun/form-input';
 
 
 function RegistrationForm() {
@@ -14,19 +15,13 @@ function RegistrationForm() {
 
     }
 
-    // if (formState.errors !== true) {
-    console.log(formState);
-    // }
-  
-    // for (const error in errors) {
-    //     console.log(errors[error]);
-    //     errors[error]?.ref?.classList.add('error')
-    // }
+    // console.log(formState);
+
 
     return (
         <form onSubmit={handleSubmit(cbSubmit)}>
             <h3>Регистрация</h3>
-            <input
+            <FormInput
                 {...register('name', {
                     required: {
                         value: true,
