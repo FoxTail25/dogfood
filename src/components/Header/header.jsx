@@ -10,7 +10,7 @@ import { CardContext } from '../../context/cardContext';
 function Header({ children }) {
 
   const { favorites } = useContext(CardContext);
-  console.log(favorites)
+  // console.log(favorites)
 
   return (
     <header className={cn(s.header, 'cover')}>
@@ -23,6 +23,7 @@ function Header({ children }) {
               <FavoreteIcon />
               {favorites.length !== 0 && <span className={s.iconBubble}>{favorites.length}</span>}
             </Link>
+           
           </div>
         </div>
       </div>

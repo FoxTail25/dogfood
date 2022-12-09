@@ -8,11 +8,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from '../../context/userContext';
 import { ContentHeader } from '../ContentHeader/content-header';
+import { Rating } from '../Rating/rating';
+import { useState } from 'react';
 
 
 export const Product = ({ onProductLike, available, description, discount, isPublished, likes = [], name, pictures, price, reviews, stock, tags, wight }) => {
 
     const { user: currentUser } = useContext(UserContext);
+
+    const [rating, setRating] = useState(3);
 
     const discountPrice = calcDiscountPrice(price, discount);
     const isLike = isLiked(likes, currentUser?._id);
@@ -26,7 +30,8 @@ export const Product = ({ onProductLike, available, description, discount, isPub
             <ContentHeader title={name}>
 
                 <div>
-                    <span>Артикул:</span> <b>2388907</b>
+                    <span>Артикул:</span>
+                    <Rating rating={rating} setRating={setRating} isEditable/>
                 </div>
 
             </ContentHeader>

@@ -48,11 +48,9 @@ export const ProductPage = () => {
   return (
     <>
         <div className='content__cards'>
-          {isLoading
 
-            ? <Spinner />
-            : !errorState && <Product {...product} setProduct={setProduct} onProductLike={handleProductLike}/>
-          }
+            {!errorState && !isLoading && <Product {...product} setProduct={setProduct} onProductLike={handleProductLike}/>}
+     
         {!isLoading && errorState && <notFound/>}
         </div>
     </>

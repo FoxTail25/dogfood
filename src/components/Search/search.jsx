@@ -1,15 +1,19 @@
 import './index.css';
 import {ReactComponent as SearchIcon} from './ic-search.svg';
 import {ReactComponent as CloseIcon} from './ic-close-input.svg';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 
 function Search({onSubmit: propsOnSubmit, onInput}) {
   const [inputText, setInputText] = useState('')
+  const inputRef = useRef(null)
 
-  const handleInput = (e) => {
-    setInputText(e.target.value)
-    onInput && onInput(e.target.value)
+  // console.log(inputRef)
+
+  const handleInput = () => {
+    setInputText(inputRef.current.value)
+
+    onInput && onInput(inputRef.current.value)
   }
 
 const handleFormSubmit = (e) => {
@@ -27,7 +31,7 @@ const handleClearInput =(e) => {
 
   return (
    <form className="search" onSubmit={handleFormSubmit}>
-        <input type="text" className='search__input' placeholder='Поиск' onInput={handleInput}/>
+        <input type="text" className='search__input' ref={inputRef} placeholder='Поиск' onInput={handleInput}/>
         <button className='search__btn'>
             {/* <SearchIcon/> */}
             {inputText && <SearchIcon/>}

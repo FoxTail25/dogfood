@@ -12,6 +12,7 @@ class Api {
         return fetch(`${this._baseUrl}/products`, {
             headers: this._headers
         }).then(onResponce)
+        // .then((e) => console.log(e.json))
     }
 
     getProductById(idProduct) {
