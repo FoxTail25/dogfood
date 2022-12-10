@@ -1,5 +1,4 @@
 import { forwardRef } from 'react'
-import { Router } from 'react-router-dom'
 import s from './index.module.css'
 
 
