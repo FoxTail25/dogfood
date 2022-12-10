@@ -20,6 +20,7 @@ import './style.css';
 // import RegistrationForm from '../Form/registration-form';
 import Modal from '../Modal/modal';
 import FormModal from '../FormModal/form-modal';
+import { Register } from '../Register/register';
 
 // function ContactList({ contacts }) {
 
@@ -54,6 +55,7 @@ function App() {
 
   const backgroundLocation = location.state?.backgroundLocation;
   const initialPath = location.state?.initialPath
+  const [currentSort, setCurrentSort] = useState('')
   // console.log('Это initialPath!!', initialPath)
 
   // const [contacts, setContacts] = useState([])
@@ -123,21 +125,23 @@ function App() {
   }, [currentUser, cards])
 
 
-  // console.log(UserContext)
+  const sortedData = (currentSort) => {
+    console.log(currentSort);
 
-  // const addContakt = useCallback((fd) => {
-  //   console.log(fd);
-  // }, [])
-
-
+    switch (currentSort) {
+      case 'low': setCards(cards.sort((a, b) => b.price - a.price)); break;
+      case 'cheap': setCards(cards.sort((a, b) => a.price - b.price)); break;
+      case 'sale': setCards(cards.sort((a, b) => b.discount - a.discount)); break;
+      default: setCards(cards.sort((a, b) => a.price - b.price)); break;
+    }
+  }
 
   return (
     <UserContext.Provider value={{ user: currentUser, isLoading }}>
       <CardContext.Provider value={{
-        cards, favorites,
-        handleLike: handleProductLike
+        cards, favorites, currentSort, handleLike: handleProductLike, onSortData: sortedData, setCurrentSort
       }}>
-        <FormModal/>
+        <FormModal />
         <Header>
           <Logo className='logo logo_place_header' href='/' />
           <Routes>
@@ -172,8 +176,7 @@ function App() {
 
             <Route path='/register' element={
               <>
-                Регистрация
-                <Link to='/login' >Войти</Link>
+                <Register/>
               </>
 
             } />
@@ -196,8 +199,9 @@ function App() {
 
               <Route path='/register' element={
                 <Modal>
-                  Регистрация
-                  <Link to='/login' replace={true} state={{ backgroundLocation: location, initialPath }}>Войти</Link>
+                  <Register/>
+                  {/* Регистрация
+                  <Link to='/login' replace={true} state={{ backgroundLocation: location, initialPath }}>Войти</Link> */}
                 </Modal>
               } />
 

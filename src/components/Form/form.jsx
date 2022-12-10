@@ -1,48 +1,21 @@
-import cn from 'classnames';
+// import cn from 'classnames';
 // import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { FormButton } from '../FormButton/form-button';
-import  {FormInput}  from '../FormInput/form-input';
+// import { useForm } from 'react-hook-form';
+// import { FormButton } from '../FormButton/form-button';
+// import  {FormInput}  from '../FormInput/form-input';
 import s from './index.module.css';
 
 
-function Form({ title, formType, button, input, infoText, infoTextHeader, changeType, redirect }) {
+function Form({ title, handleFormSubmit, children }) {
 
-    const { register, handleSubmit, formState: { errors } } = useForm({ mode: 'onBlur' })
-
-
-    const cbSubmit = (data) => {
-        console.log(data);
-    }
-
-    const emailRegexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const passwordRegexp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-
-    const emailRegister = register('email', {
-        required: {
-            value: true,
-            message: "Обязательное поле"
-        },
-        pattern: {
-            value: emailRegexp,
-            message: 'Указанный Email не соответствует формату электронной почты'
-        }
-    })
-    const passwordRegister = register('password', {
-        required: {
-            value: true,
-            message: "Обязательное поле"
-        },
-        pattern: {
-            value: passwordRegexp,
-            message: 'Пароль должен быть не менее 8 символов, среди них должна быть минимум 1 цифра и 1 буква латинского алфавита'
-        }
-    })
-
+ 
     return (
-        <form onSubmit={handleSubmit(cbSubmit)}>
+        <form onSubmit={handleFormSubmit}>
             <h1 className={s.title}>{title}</h1>
-            <FormInput
+
+            {children}
+
+            {/* <FormInput
                 {...emailRegister}
                 id='email'
                 type="text"
@@ -79,7 +52,7 @@ function Form({ title, formType, button, input, infoText, infoTextHeader, change
 
             {['login', 'registration'].includes(formType) &&
                  <FormButton type='button' color='white' onClick={() => changeType(redirect)}>{button.redirect}</FormButton>
-            }
+            } */}
 
         </form>
         // null
