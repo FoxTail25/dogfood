@@ -4,26 +4,26 @@ import { calcDiscountPrice, isLiked, createMarkup } from "../../utils/product";
 import { ReactComponent as Save } from './img/save.svg'
 import truck from './img/truck.svg'
 import quality from './img/quality.svg'
-import { Link, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { UserContext } from '../../context/userContext';
 import { ContentHeader } from '../ContentHeader/content-header';
 import { Rating } from '../Rating/rating';
-import { useState } from 'react';
+import { FormReview } from '../FormReview/form-review';
 
 
-export const Product = ({ onProductLike, available, description, discount, isPublished, likes = [], name, pictures, price, reviews, stock, tags, wight }) => {
+export const Product = ({ onProductLike, available, description, discount, isPublished, likes = [], name, pictures, price, reviews, stock, tags, wight, _id, setProduct}) => {
+
+    // console.log(reviews, name)
 
     const { user: currentUser } = useContext(UserContext);
-
-    const [rating, setRating] = useState(3);
+    // const [rating, setRating] = useState(null);
 
     const discountPrice = calcDiscountPrice(price, discount);
     const isLike = isLiked(likes, currentUser?._id);
     const descriptionHTML = createMarkup(description)
-    // console.log(descriptionHTML)
-
-    const navigate = useNavigate()
+ 
+    const ratingCount = useMemo(() => Math.round(reviews.reduce((acc, item) => acc = acc + item.rating, 0)/reviews.length), [reviews])
+    // console.log(ratingCount)
 
     return (
         <>
@@ -31,7 +31,8 @@ export const Product = ({ onProductLike, available, description, discount, isPub
 
                 <div>
                     <span>Артикул:</span>
-                    <Rating rating={rating} setRating={setRating} isEditable/>
+                    <Rating rating={ratingCount} />
+                   {reviews.length} отзыв
                 </div>
 
             </ContentHeader>
@@ -114,6 +115,10 @@ export const Product = ({ onProductLike, available, description, discount, isPub
                     </div>
                 </div>
             </div>
+            <ul>
+            {reviews.map(e => <li key={e._id}>{e.text} <Rating rating={e.rating}/></li>)}
+            </ul>
+            <FormReview title={`Отзыв о товаре ${name}`} productId={_id} setProduct={setProduct}/>
         </>
     );
 };

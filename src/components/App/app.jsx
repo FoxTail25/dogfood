@@ -21,6 +21,8 @@ import './style.css';
 import Modal from '../Modal/modal';
 import FormModal from '../FormModal/form-modal';
 import { Register } from '../Register/register';
+import { Login } from '../Login/login';
+import { ResetPassword } from '../ReaetPassword/reset-password';
 
 // function ContactList({ contacts }) {
 
@@ -141,17 +143,17 @@ function App() {
       <CardContext.Provider value={{
         cards, favorites, currentSort, handleLike: handleProductLike, onSortData: sortedData, setCurrentSort
       }}>
-        <FormModal />
+        {/* <FormModal /> */}
         <Header>
           <Logo className='logo logo_place_header' href='/' />
-          <Routes>
-            <Route path='/' element={
+          {/* <Routes> */}
+            {/* <Route path='/' element={ */}
               <Search
                 onSubmit={handleFormSubmit}
                 onInput={handleInputChange}
               />
-            } />
-          </Routes>
+            {/* } /> */}
+          {/* </Routes> */}
 
         </Header>
         <main className='content container'>
@@ -168,8 +170,9 @@ function App() {
 
             <Route path='/login' element={
               <>
-                Авторизация
-                <Link to='/register' >Зарегистрироваться</Link>
+              <Login/>
+                {/* Авторизация
+                <Link to='/register' >Зарегистрироваться</Link> */}
               </>
 
             } />
@@ -177,6 +180,13 @@ function App() {
             <Route path='/register' element={
               <>
                 <Register/>
+              </>
+
+            } />
+
+            <Route path='/reset-password' element={
+              <>
+                <ResetPassword/>
               </>
 
             } />
@@ -192,16 +202,19 @@ function App() {
 
               <Route path='/login' element={
                 <Modal>
-                  Авторизация
-                  <Link to='/register' replace={true} state={{ backgroundLocation: location, initialPath }}>Зарегистрироваться</Link>
+                  <Login/>
                 </Modal>
               } />
 
               <Route path='/register' element={
                 <Modal>
                   <Register/>
-                  {/* Регистрация
-                  <Link to='/login' replace={true} state={{ backgroundLocation: location, initialPath }}>Войти</Link> */}
+                </Modal>
+              } />
+
+              <Route path='/reset-password' element={
+                <Modal>
+                  <ResetPassword/>
                 </Modal>
               } />
 

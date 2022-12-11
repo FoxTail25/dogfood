@@ -19,3 +19,9 @@
     outline: none;
     border-color: #FFE44D;
   }
+
+  .textarea {
+    height: auto;
+    min-height: 100px;
+    resize: none;
+  }

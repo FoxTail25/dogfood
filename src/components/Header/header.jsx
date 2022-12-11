@@ -20,12 +20,13 @@ function Header({ children }) {
           {/* <div className="header__wrapper"> */}
           {children}
           <div className={s.iconsMenu}>
+
+            <Link to='/login' state={{backgroundLocation: location, initialPath: location.pathname}}>Войти</Link>
+
             <Link className={s.favoritesLink} to={{pathname: '/favorites'}}>
               <FavoreteIcon />
               {favorites.length !== 0 && <span className={s.iconBubble}>{favorites.length}</span>}
             </Link>
-
-            <Link to='/login' state={{backgroundLocation: location, initialPath: location.pathname}}>Войти</Link>
            
           </div>
         </div>

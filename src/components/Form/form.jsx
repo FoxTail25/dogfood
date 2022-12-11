@@ -10,7 +10,7 @@ function Form({ title, handleFormSubmit, children }) {
 
  
     return (
-        <form onSubmit={handleFormSubmit}>
+        <form className={s.form} onSubmit={handleFormSubmit}>
             <h1 className={s.title}>{title}</h1>
 
             {children}
@@ -55,32 +55,8 @@ function Form({ title, handleFormSubmit, children }) {
             } */}
 
         </form>
-        // null
+        
     );
 };
 
 export default Form;
-
-
-// const [formData, setFormData] = useState({
-//     name:'',
-//     lastName:'',
-//     phoneNumber:''
-// })
-
-// const handleChange = (event) => {
-//     setFormData({...formData, [event.target.name]: event.target.value})
-// }
-
-// const handleSubmit = (event) => {
-//     event.preventDefault();
-//     // console.log(formData);
-//     serializeCb(formData)
-//     setFormData(
-//     {
-//         name:'',
-//         lastName:'',
-//         phoneNumber:''
-//     }
-//     )
-// }

@@ -1,13 +1,18 @@
 import { useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { EMAIL_REGEXP, PASSWORD_REGEXP, VALIDATE_CONFIG } from "../../utils/constants"
 import Form from "../Form/form"
 import { FormButton } from "../FormButton/form-button"
 import { FormInput } from "../FormInput/form-input"
-// import s from './index.module.css'
+import s from '../Form/index.module.css'
 
 
 export const Register = () => {
+
+    const location = useLocation()
+    const initialPath = location.state?.initialPath
+    // const backgroundLocation = location.state?.backgroundLocation;
+
 
     const { register, handleSubmit, formState: { errors } } = useForm({ mode: 'onBlur' })
 
@@ -15,7 +20,7 @@ export const Register = () => {
 
     const handleClickLoginButton = (e) => {
         e.preventDefault();
-        navigate('/login');
+        navigate('/login', { replace: true, state: {backgroundLocation: location, initialPath}});
     }
     const sendRegisterApi = (data) => {
         console.log(data)
@@ -54,9 +59,9 @@ export const Register = () => {
                 placeholder="email"
 
             />
-            <div>
-                {errors?.email && <p className='errorMessage'>{errors?.email?.message}</p>}
-            </div>
+           
+                {errors?.email && <p className={s.errorMessage}>{errors?.email?.message}</p>}
+           
 
             <FormInput
                 {...passwordRegister}
@@ -65,11 +70,9 @@ export const Register = () => {
                 placeholder="password"
 
             />
-            <div>
-                {errors?.password && <p className='errorMessage'>{errors?.password?.message}</p>}
-            </div>
+                {errors?.password && <p className={s.errorMessage}>{errors?.password?.message}</p>}
 
-            <p className='infoText'>Регистрируясь на сайте, вы соглашаетесь с нашими Правилами и Политикой конфиденциальности и соглашаетесь на информационную рассылку.</p>
+            <p className={s.infoText}>Регистрируясь на сайте, вы соглашаетесь с нашими Правилами и Политикой конфиденциальности и соглашаетесь на информационную рассылку.</p>
 
             <FormButton type='submit' color='yellow'>Зарегистрироваться</FormButton>
 
