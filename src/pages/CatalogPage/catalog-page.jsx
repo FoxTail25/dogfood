@@ -11,13 +11,13 @@ export const CatalogPage = () => {
   const { cards } = useContext(CardContext);
 
   return (
-    <>
+    <div className="container container_inner">
       <Sort/>
       <div className='content__cards'>
 
         <CardList cards={cards} />
 
       </div>
-    </>
+    </div>
   )
 }

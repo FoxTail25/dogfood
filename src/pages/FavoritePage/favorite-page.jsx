@@ -9,16 +9,16 @@ import { CardContext } from "../../context/cardContext"
 
 export const FavoritePage = () => {
 
-    const { favorites } = useContext(CardContext)
+  const { favorites } = useContext(CardContext)
 
   return (
-    <>
-    <ContentHeader title='Избранное'/>
-    
+    <div className="container container_inner">
+      <ContentHeader title='Избранное' />
+
       <Sort />
       <div className='content__cards'>
-        <CardList cards={favorites}/>
+        <CardList cards={favorites} />
       </div>
-    </>
+    </div>
   )
 }

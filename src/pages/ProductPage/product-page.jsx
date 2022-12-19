@@ -1,7 +1,6 @@
 
-import Spinner from "../../components/Spinner/Spinner"
 import api from "../../utils/api"
-import { useEffect, useState, useCallback} from "react"
+import { useCallback } from "react"
 import { Product } from "../../components/Product/product"
 import { useParams } from "react-router-dom";
 import { useContext } from "react"
@@ -10,16 +9,16 @@ import { useApi } from "../../hooks/useApi";
 
 export const ProductPage = () => {
 
-  
+
   const { productId } = useParams();
-  const {handleLike} = useContext(CardContext);
+  const { handleLike } = useContext(CardContext);
 
   // const [product, setProduct] = useState(null)
   // const [errorState, setErrorState] = useState(null)
 
   const handleGetProduct = useCallback(() => api.getProductById(productId), [productId]);
 
-  const {data: product,
+  const { data: product,
     setData: setProduct,
     loading: isLoading,
     error: errorState
@@ -34,7 +33,7 @@ export const ProductPage = () => {
 
   }, [product, handleLike, setProduct])
 
- 
+
 
 
   // useEffect(() => {
@@ -46,13 +45,16 @@ export const ProductPage = () => {
   // }, [])
 
   return (
-    <>
-        <div className='content__cards'>
+    <div className="container container_inner">
 
-            {!errorState && !isLoading && <Product {...product} setProduct={setProduct} onProductLike={handleProductLike}/>}
-     
-        {!isLoading && errorState && <notFound/>}
-        </div>
-    </>
+      <div className='content__cards'>
+
+        {!errorState && !isLoading && <Product {...product} setProduct={setProduct} onProductLike={handleProductLike} />}
+
+        {!isLoading && errorState && <notFound />}
+
+      </div>
+
+    </div>
   )
 }

@@ -15,7 +15,7 @@ import Search from '../Search/search';
 import Footer from '../Footer/footer';
 import api from '../../utils/api';
 import useDebounce from '../../hooks/useDebounce';
-import './style.css';
+import './index.css';
 // import Form from '../Form/form';
 // import RegistrationForm from '../Form/registration-form';
 import Modal from '../Modal/modal';
@@ -23,6 +23,7 @@ import FormModal from '../FormModal/form-modal';
 import { Register } from '../Register/register';
 import { Login } from '../Login/login';
 import { ResetPassword } from '../ReaetPassword/reset-password';
+import { HomePage } from '../../pages/HomePage/home-page';
 
 // function ContactList({ contacts }) {
 
@@ -156,11 +157,15 @@ function App() {
           {/* </Routes> */}
 
         </Header>
-        <main className='content container'>
+        <main className='content'>
           <SeachInfo searchText={searchQuery} />
           <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
 
-            <Route index element={<CatalogPage />} />
+            <Route index element={<HomePage />} />
+            
+            
+            <Route path='/catalog' element={<CatalogPage />} />
+
 
             <Route path='/product/:productId' element={<ProductPage />} />
 
