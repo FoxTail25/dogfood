@@ -1,35 +1,35 @@
 import cn from 'classnames';
-import { useContext } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { CardContext } from '../../context/cardContext';
-import { UserContext } from '../../context/userContext';
 import { calcDiscountPrice, isLiked } from '../../utils/product';
 import ContentLoader from "react-content-loader";
 
 import "./index.css";
 import { ReactComponent as Save } from "./save.svg";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchChangrLikeProduct } from '../../storage/products/productSlice';
 
 
 const Card = ({ name, price, discount, wight, description, pictures, tags, _id, likes }) => {
 
 
+	const currentUser = useSelector(state => state.user.data);
+	const isLoading = useSelector(state => state.user.loading);
+	
+	const dispatch = useDispatch();
 
-	const { user: currentUser, isLoading } = useContext(UserContext);
-	const { handleLike: onProductLike } = useContext(CardContext);
+	const handleLike = useCallback(() => {
+		return dispatch(fetchChangrLikeProduct({_id, likes}))
+	}, [dispatch, _id, likes])
+
 	const discount_price = calcDiscountPrice(price, discount);
 
 	const liked = isLiked(likes, currentUser?._id)
 
-
-	function handleLike() {
-		onProductLike({ _id, likes })
-	}
-	// console.log('это исЛоадинг из кард', isLoading)
-
 	return (
 		<>
-			{ isLoading
-				?  <ContentLoader
+			{isLoading
+				? <ContentLoader
 					speed={2}
 					width={186}
 					height={385}
@@ -39,7 +39,7 @@ const Card = ({ name, price, discount, wight, description, pictures, tags, _id, 
 				>
 					<path d="M 0 0 h 185.6 v 187 H 0 z M 0 203 h 186 v 14 H 0 z M 0 233 h 186 v 56 H 0 z M 0 305 h 186 v 24 H 0 z" />
 					<rect x="0" y="345" rx="20" ry="20" width="121" height="40" />
-			    	</ContentLoader>
+				</ContentLoader>
 				: <div className="card">
 					<div className="card__sticky card__sticky_type_top-left">
 						{discount !== 0 && <span className="card__discount">{`-${discount}%`}</span>}
@@ -69,7 +69,7 @@ const Card = ({ name, price, discount, wight, description, pictures, tags, _id, 
 					<a href="#" className="card__cart btn btn_type_primary">
 						В корзину
 					</a>
-				  </div>
+				</div>
 			}
 		</>
 	);

@@ -1,33 +1,54 @@
 
 import s from './index.module.css';
 import cn from 'classnames'
-import { ReactComponent as FavoreteIcon } from './img/favorite.svg'
 import { Link, useLocation } from 'react-router-dom';
-import { useContext } from 'react';
-import { CardContext } from '../../context/cardContext';
+import { ReactComponent as FavoriteIcon } from './img/favorite.svg'
+import { ReactComponent as LogoutIcon } from './img/logout.svg'
+import { ReactComponent as CartIcon } from './img/cart.svg'
+import { ReactComponent as ProfileIcon } from './img/profile.svg'
+import { ReactComponent as UserIcon } from './img/user.svg'
+import { useSelector } from 'react-redux';
 
 
 function Header({ children }) {
 
-  const { favorites } = useContext(CardContext);
+  
+  const favorites = useSelector(state => state.products.favoriteProducts)
+
   const location = useLocation()
-  // console.log(favorites)
 
   return (
     <header className={cn(s.header, 'cover')}>
       <div className="container">
         <div className={s.header__wrapper}>
-          {/* <div className="header__wrapper"> */}
           {children}
           <div className={s.iconsMenu}>
 
-            <Link to='/login' state={{backgroundLocation: location, initialPath: location.pathname}}>Войти</Link>
-
-            <Link className={s.favoritesLink} to={{pathname: '/favorites'}}>
-              <FavoreteIcon />
+            <Link className={s.favoritesLink} to={{pathname:"/favorites"}}>
+              <FavoriteIcon/>
               {favorites.length !== 0 && <span className={s.iconBubble}>{favorites.length}</span>}
             </Link>
-           
+
+            <Link className={s.favoritesLink} to={{pathname:"/cart"}}>
+              <CartIcon/>
+              {favorites.length !== 0 && <span className={s.iconBubble}>{favorites.length}</span>}
+            </Link>
+
+            <Link to='/login' state={{backgroundLocation: location, initialPath: location.pathname}} className={s.iconsMenuItem} >
+              <UserIcon/>
+              Войти
+            </Link>
+
+            <Link to='/profile' className={s.iconsMenuItem}>
+              <ProfileIcon/>
+              Максим
+            </Link>
+
+            <Link to='/' className={s.iconsMenuItem}>
+              <LogoutIcon/>
+              Выйти
+            </Link>
+            
           </div>
         </div>
       </div>

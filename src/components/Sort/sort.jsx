@@ -1,7 +1,7 @@
 import "./index.css";
 import cn from 'classnames';
-import { useContext } from "react";
-import { CardContext } from "../../context/cardContext";
+import { useDispatch, useSelector } from "react-redux";
+import { sortedProducts } from "../../storage/products/productSlice";
 
 const tabs = [
     {
@@ -20,12 +20,12 @@ const tabs = [
 
 const Sort = () => {
 
-	const {currentSort, setCurrentSort, onSortData} = useContext(CardContext);
+	const dispatch = useDispatch();
+	const { currentSort } = useSelector(state => state.products);
 
 	const handleClick = (e, tab) => {
 		e.preventDefault();
-		setCurrentSort(tab.id)
-		onSortData(tab.id)
+		dispatch(sortedProducts(tab.id))
 	}
 	return (
 		<div className="sort content__sort">

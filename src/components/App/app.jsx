@@ -1,11 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { isLiked } from '../../utils/product';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { CatalogPage } from '../../pages/CatalogPage/catalog-page';
 import { ProductPage } from '../../pages/ProductPage/product-page';
 import { NotFoundPage } from '../../pages/NotFoundPage/not-found-page';
-import { UserContext } from '../../context/userContext';
-import { CardContext } from '../../context/cardContext';
 import { FaqPage } from '../../pages/FAQPage/faq-page';
 import { FavoritePage } from '../../pages/FavoritePage/favorite-page';
 import Header from '../Header/header';
@@ -16,32 +13,16 @@ import Footer from '../Footer/footer';
 import api from '../../utils/api';
 import useDebounce from '../../hooks/useDebounce';
 import './index.css';
-// import Form from '../Form/form';
-// import RegistrationForm from '../Form/registration-form';
 import Modal from '../Modal/modal';
-import FormModal from '../FormModal/form-modal';
 import { Register } from '../Register/register';
 import { Login } from '../Login/login';
 import { ResetPassword } from '../ReaetPassword/reset-password';
 import { HomePage } from '../../pages/HomePage/home-page';
+import { useDispatch } from 'react-redux';
+import {  fetchProducts } from '../../storage/products/productSlice';
+import { fetchUser } from '../../storage/user/userSlice';
 
-// function ContactList({ contacts }) {
 
-//   console.log(contacts);
-
-//   return (
-//     <div>
-//       {contacts.map((contact) => (
-//         <div key={contact.phoneNumber}>
-//           <p>{contact.name}</p>
-//           <p>{contact.lastName}</p>
-//           <p>{contact.phoneNumber}</p>
-//         </div>
-//       ))}
-//     </div>
-//     null
-//   );
-// };
 
 function App() {
 
@@ -51,18 +32,11 @@ function App() {
   const debounceSearchQuery = useDebounce(searchQuery, 500)
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate()
-  const [favorites, setFavorites] = useState([])
-  // const [isOpenModalForm, setIsOpenModalForm] = useState(false)
-
+  const dispatch = useDispatch()
   const location = useLocation()
 
   const backgroundLocation = location.state?.backgroundLocation;
   const initialPath = location.state?.initialPath
-  const [currentSort, setCurrentSort] = useState('')
-  // console.log('Это initialPath!!', initialPath)
-
-  // const [contacts, setContacts] = useState([])
-
   const handleRequest = useCallback(() => {
     setIsLoading(true)
     api.search(searchQuery)
@@ -75,18 +49,12 @@ function App() {
 
 
   useEffect(() => {
-    setIsLoading(true)
-    Promise.all([api.getProductList(), api.getUserInfo()])
-      .then(([productData, userData]) => {
-        setCurrentUser(userData);
-        setCards(productData.products);
-        const favoriteProducts = productData.products.filter(item => isLiked(item.likes, userData._id));
-        // console.log(favoriteProducts);
-        setFavorites(prevState => favoriteProducts)
-      })
-      .catch(err => console.log(err))
-      .finally(setIsLoading(false))
-  }, [])
+    const userData = dispatch(fetchUser());
+    userData.then(() => {
+      dispatch(fetchProducts());
+    })
+
+  }, [dispatch])
 
 
   useEffect(() => {
@@ -109,61 +77,34 @@ function App() {
         setCurrentUser(newUserData)
       })
   }
-  const handleProductLike = useCallback((product) => {
-    const liked = isLiked(product.likes, currentUser._id)
-    return api.changeLikeProd(product._id, liked)
-      .then((updateCard) => {
-        const newProducts = cards.map(cardState => {
-          return cardState._id === updateCard._id ? updateCard : cardState
-        })
 
-        if (!liked) {
-          setFavorites(prevState => [...prevState, updateCard])
-        } else {
-          setFavorites(prevState => prevState.filter(card => card._id !== updateCard._id))
-        }
-        setCards(newProducts);
-        return updateCard;
-      })
-  }, [currentUser, cards])
-
-
-  const sortedData = (currentSort) => {
-    console.log(currentSort);
-
-    switch (currentSort) {
-      case 'low': setCards(cards.sort((a, b) => b.price - a.price)); break;
-      case 'cheap': setCards(cards.sort((a, b) => a.price - b.price)); break;
-      case 'sale': setCards(cards.sort((a, b) => b.discount - a.discount)); break;
-      default: setCards(cards.sort((a, b) => a.price - b.price)); break;
-    }
-  }
 
   return (
-    <UserContext.Provider value={{ user: currentUser, isLoading }}>
-      <CardContext.Provider value={{
-        cards, favorites, currentSort, handleLike: handleProductLike, onSortData: sortedData, setCurrentSort
-      }}>
-        {/* <FormModal /> */}
+  
+      <>
         <Header>
-          <Logo className='logo logo_place_header' href='/' />
-          {/* <Routes> */}
-            {/* <Route path='/' element={ */}
-              <Search
-                onSubmit={handleFormSubmit}
-                onInput={handleInputChange}
+          <>
+            <Logo className='logo logo_place_header' href='/' />
+            <Routes>
+              <Route path='/catalog' element={
+                <Search
+                  onSubmit={handleFormSubmit}
+                  onInput={handleInputChange}
+                />
+              } />
+              <Route path='*' element={<></>}
               />
-            {/* } /> */}
-          {/* </Routes> */}
 
+            </Routes>
+          </>
         </Header>
         <main className='content'>
           <SeachInfo searchText={searchQuery} />
           <Routes location={(backgroundLocation && { ...backgroundLocation, pathname: initialPath }) || location}>
 
             <Route index element={<HomePage />} />
-            
-            
+
+
             <Route path='/catalog' element={<CatalogPage />} />
 
 
@@ -175,7 +116,7 @@ function App() {
 
             <Route path='/login' element={
               <>
-              <Login/>
+                <Login />
                 {/* Авторизация
                 <Link to='/register' >Зарегистрироваться</Link> */}
               </>
@@ -184,14 +125,14 @@ function App() {
 
             <Route path='/register' element={
               <>
-                <Register/>
+                <Register />
               </>
 
             } />
 
             <Route path='/reset-password' element={
               <>
-                <ResetPassword/>
+                <ResetPassword />
               </>
 
             } />
@@ -207,19 +148,19 @@ function App() {
 
               <Route path='/login' element={
                 <Modal>
-                  <Login/>
+                  <Login />
                 </Modal>
               } />
 
               <Route path='/register' element={
                 <Modal>
-                  <Register/>
+                  <Register />
                 </Modal>
               } />
 
               <Route path='/reset-password' element={
                 <Modal>
-                  <ResetPassword/>
+                  <ResetPassword />
                 </Modal>
               } />
 
@@ -228,8 +169,8 @@ function App() {
           )}
         </main>
         <Footer />
-      </CardContext.Provider>
-    </UserContext.Provider>
+      </>
+  
   )
 }
 export default App;

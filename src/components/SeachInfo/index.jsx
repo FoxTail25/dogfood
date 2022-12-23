@@ -1,10 +1,9 @@
-import { useContext } from "react";
-import { CardContext } from "../../context/cardContext";
+import { useSelector } from "react-redux";
 import "./index.css";
 
 const SeachInfo = ({searchText}) => {
 
-	const {cards} = useContext(CardContext)
+	const cards = useSelector(state => state.products.data)
 
 	return (
 		searchText && <section className="search-title">

@@ -9,24 +9,10 @@ export const VALIDATE_CONFIG = {
     passwordMessage: 'Пароль должен быть не менее 8 символов, среди них должна быть минимум 1 цифра и 1 буква латинского алфавита'
 }
 
+export const INITIAL_VALUE_RATING = 1
 
-// export const emailRegister = register('email', {
-//     required: {
-//         value: true,
-//         message: "Обязательное поле"
-//     },
-//     pattern: {
-//         value: emailRegexp,
-//         message: 'Указанный Email не соответствует формату электронной почты'
-//     }
-// })
-// export const passwordRegister = register('password', {
-//     required: {
-//         value: true,
-//         message: "Обязательное поле"
-//     },
-//     pattern: {
-//         value: passwordRegexp,
-//         message: 'Пароль должен быть не менее 8 символов, среди них должна быть минимум 1 цифра и 1 буква латинского алфавита'
-//     }
-// })
+export const SORTED = {
+    LOW: 'low',
+    CHEAP: 'cheap',
+    SALE: 'sale'
+}

@@ -4,26 +4,23 @@ import { calcDiscountPrice, isLiked, createMarkup } from "../../utils/product";
 import { ReactComponent as Save } from './img/save.svg'
 import truck from './img/truck.svg'
 import quality from './img/quality.svg'
-import { useContext, useMemo } from 'react';
-import { UserContext } from '../../context/userContext';
 import { ContentHeader } from '../ContentHeader/content-header';
 import { Rating } from '../Rating/rating';
 import { FormReview } from '../FormReview/form-review';
+import { useSelector } from 'react-redux';
+import { useMemo } from 'react';
 
 
-export const Product = ({ onProductLike, available, description, discount, isPublished, likes = [], name, pictures, price, reviews, stock, tags, wight, _id, setProduct}) => {
+export const Product = ({ onProductLike, available, description, discount, isPublished, likes = [], name, pictures, price, reviews, stock, tags, wight, _id}) => {
 
-    // console.log(reviews, name)
 
-    const { user: currentUser } = useContext(UserContext);
-    // const [rating, setRating] = useState(null);
+    const currentUser = useSelector(state => state.user.data)
 
     const discountPrice = calcDiscountPrice(price, discount);
     const isLike = isLiked(likes, currentUser?._id);
     const descriptionHTML = createMarkup(description)
  
     const ratingCount = useMemo(() => Math.round(reviews.reduce((acc, item) => acc = acc + item.rating, 0)/reviews.length), [reviews])
-    // console.log(ratingCount)
 
     return (
         <>
@@ -118,7 +115,7 @@ export const Product = ({ onProductLike, available, description, discount, isPub
             <ul>
             {reviews.map(e => <li key={e._id}>{e.text} <Rating rating={e.rating}/></li>)}
             </ul>
-            <FormReview title={`Отзыв о товаре ${name}`} productId={_id} setProduct={setProduct}/>
+            <FormReview title={`Отзыв о товаре ${name}`} productId={_id} />
         </>
     );
 };

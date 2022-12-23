@@ -12,7 +12,7 @@ export const ContentHeader = ({title, children}) => {
         <div>
 
             {/* <Link className="button-back" to="/">Назад</Link> РАБОТАЕТ БЕЗ ПЕРЕЗАГРУЗКИ СТРАНИЦЫ */}
-            <a className="button-back" href='#' onClick={() => navigate(-1)}>Назад</a>
+            <a className="button-back" href='#' onClick={() => navigate(-1)}>Назад в каталог</a>
             <h1 className={s.productTitle}>{title}</h1>
             {children}
 
