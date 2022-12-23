@@ -12,7 +12,7 @@ export const fetchProducts = createAsyncThunk(
     ) {
         try {
             const { user } = getState()
-            console.log(user);
+            // console.log(user);
             const data = await api.getProductList();
             return fulfillWithValue({ ...data, currentUser: user.data })
         } catch (error) {

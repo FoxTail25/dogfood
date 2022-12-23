@@ -8,7 +8,7 @@ import Sort from "../../components/Sort/sort"
 export const FavoritePage = () => {
 
   const favorites = useSelector(state => state.products.favoriteProducts)
-console.log(favorites)
+// console.log(favorites)
   return (
     <div className="container container_inner">
       <ContentHeader title='Избранное' />
