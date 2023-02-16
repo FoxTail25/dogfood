@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import s from './index.module.css';
+import s from './hero.module.css';
 import banner from './img/banner.png'
 import arrow from './img/arrow.svg'
 import cn from 'classnames';

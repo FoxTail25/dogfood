@@ -1,0 +1,17 @@
+.banner__group {
+    display: flex;
+    /* justify-content: space-between; */
+    width: 100%;
+}
+
+
+@media (max-width: 375px) {
+
+    .banner__group {
+
+        flex-direction: column;
+        /* width: 100%; */
+
+    }
+
+}

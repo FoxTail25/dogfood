@@ -1,0 +1,36 @@
+.banner {
+    /* width: 100%; */
+    display: flex;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+.banner_middle {
+    width: 50%;
+    min-height: 220px;
+}
+
+.banner_big {
+    width: 100%;
+    min-height: 260px;
+}
+
+@media (max-width: 375px) {
+    
+    .banner {
+        width: 100%;
+        display: flex;
+        /* background-size: cover; */
+    }
+    .banner_big {
+        min-height: 152px;
+    }
+
+    
+    .banner_middle {
+        width: 100%;
+        min-height: 152px;
+    }
+
+}
